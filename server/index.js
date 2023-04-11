@@ -3,14 +3,21 @@ const app = express();
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
 
 app.use(cors());
+dotenv.config();
 
 const server = http.createServer(app);
+const PORT = process.env.PORT || 3001;
+const ORIGIN = process.env.ORIGIN;
+
+connectDB();
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://192.168.1.165:3000',
+    origin: ORIGIN,
     methods: ['GET', 'POST'],
   },
 });
@@ -54,6 +61,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log('Server is running on 3001');
+server.listen(PORT, () => {
+  console.log('Server is running on ' + PORT);
 });
