@@ -18,27 +18,14 @@ import React, { useEffect, useState } from 'react';
 import TimePicker from 'rc-time-picker';
 // import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
+import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 
 const Settings = () => {
-  const [randoriTimers, setRandoriTimers] = useState({
-    time: {
-      minutes: 3,
-      seconds: 25,
-    },
-    rounds: 1,
-    warning: {
-      minutes: 3,
-      seconds: 25,
-    },
-    rest: {
-      minutes: 0,
-      seconds: 30,
-    },
-    prepare: {
-      minutes: 0,
-      seconds: 15,
-    },
-  });
+  const { user } = useAuth0();
+
+  // console.log(user.email);
+
   const [timers, setTimers] = useState([
     {
       mode: 'randori',
@@ -124,7 +111,13 @@ const Settings = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log('submit');
+    // console.log('submit');
+
+    axios.post(`http://localhost:3001/users/createUser`, {
+      email: user.email,
+    });
+
+    console.log('user created');
   }
 
   function handleChange(e, mode, type) {
@@ -142,6 +135,17 @@ const Settings = () => {
     }
 
     setTimers([...timers], newTimer);
+  }
+
+  async function loadTimes() {
+    const currentUser = await user;
+
+    const times = await axios.get(
+      `http://localhost:3001/users/getUser/${currentUser.email}`
+    );
+
+    console.log(times.data);
+    // setTimers{}
   }
 
   useEffect(() => {
@@ -174,9 +178,16 @@ const Settings = () => {
                     <TimePicker
                       inputReadOnly={true}
                       showHour={false}
-                      // defaultValue={moment()
-                      //   .minute(timers.randori.time.minutes)
-                      //   .second(timers.randori.time.seconds)}
+                      value={moment()
+                        .minute(
+                          timers.find((timer) => timer.mode === 'randori').time
+                            .minutes
+                        )
+                        .second(
+                          timers.find((timer) => timer.mode === 'randori').time
+                            .seconds
+                        )}
+                      defaultOpenValue={moment().minute(0).second(0)}
                       onChange={(e) => handleChange(e, 'randori', 'time')}
                     />
                   </Flex>
@@ -192,6 +203,7 @@ const Settings = () => {
                       showHour={false}
                       showMinute={false}
                       // defaultValue={moment().second(timers.randori.rounds)}
+                      defaultOpenValue={moment().minute(0).second(0)}
                       onChange={(e) => handleChange(e, 'randori', 'rounds')}
                     />
                   </Flex>
@@ -208,6 +220,7 @@ const Settings = () => {
                       // defaultValue={moment()
                       //   .minute(timers.randori.warning.minutes)
                       //   .second(timers.randori.warning.seconds)}
+                      defaultOpenValue={moment().minute(0).second(0)}
                       onChange={(e) => handleChange(e, 'randori', 'warning')}
                     />
                   </Flex>
@@ -224,7 +237,8 @@ const Settings = () => {
                       // defaultValue={moment()
                       //   .minute(timers.randori.rest.minutes)
                       //   .second(timers.randori.rest.seconds)}
-                      onChange={(e) => conshandleChange(e, 'randori', 'rest')}
+                      defaultOpenValue={moment().minute(0).second(0)}
+                      onChange={(e) => handleChange(e, 'randori', 'rest')}
                     />
                   </Flex>
                   <Divider />
@@ -240,12 +254,16 @@ const Settings = () => {
                       // defaultValue={moment()
                       //   .minute(timers.randori.prepare.minutes)
                       //   .second(timers.randori.prepare.seconds)}
+                      defaultOpenValue={moment().minute(0).second(0)}
                       onChange={(e) => handleChange(e, 'randori', 'prepare')}
                     />
                   </Flex>
-                  <Flex justifyContent="flex-end">
+                  <Flex justifyContent="flex-end" gap={1}>
                     <Button type="submit" rightIcon={<RiSaveLine />} size="sm">
                       Save
+                    </Button>
+                    <Button onClick={loadTimes} size="sm">
+                      Load
                     </Button>
                   </Flex>
                 </FormControl>

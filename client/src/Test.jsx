@@ -6,7 +6,7 @@ import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
 import QRCode from 'react-qr-code';
 
-const socket = io.connect('192.168.1.165:3001');
+const socket = io.connect('http://localhost:3001');
 
 function Test() {
   const [message, setMessage] = useState('');
