@@ -7,10 +7,19 @@ import Settings from './Settings';
 import Test from './Test';
 import Qr from './QrReader';
 import Login from './Login';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <div>
+    <QueryClientProvider client={queryClient}>
       <Nav />
       <Routes>
         <Route path="/" element={<Login />} />
@@ -19,7 +28,7 @@ const App = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/qr" element={<Qr />} />
       </Routes>
-    </div>
+    </QueryClientProvider>
   );
 };
 

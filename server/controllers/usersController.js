@@ -1,4 +1,4 @@
-const User = require('../models/Timers');
+const User = require('../models/Users');
 
 module.exports = {
   getUser: async (req, res) => {

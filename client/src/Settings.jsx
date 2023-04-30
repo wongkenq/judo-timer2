@@ -20,94 +20,89 @@ import TimePicker from 'rc-time-picker';
 import moment from 'moment';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 const Settings = () => {
-  const { user } = useAuth0();
+  const { user, isLoading } = useAuth0();
 
   // console.log(user.email);
 
-  const [timers, setTimers] = useState([
-    {
-      mode: 'randori',
+  const [timers, setTimers] = useState({
+    randori: {
       time: {
-        minutes: 3,
-        seconds: 25,
-      },
-      rounds: 1,
-      warning: {
-        minutes: 3,
-        seconds: 25,
+        minutes: 5,
+        seconds: 0,
       },
       rest: {
         minutes: 0,
         seconds: 30,
       },
-      prepare: {
-        minutes: 0,
-        seconds: 15,
-      },
-    },
-    {
-      mode: 'uchikomi',
-      time: {
-        minutes: 3,
-        seconds: 0,
-      },
-      rounds: 1,
       warning: {
         minutes: 0,
         seconds: 15,
       },
-      rest: {
-        minutes: 0,
-        seconds: 0,
-      },
       prepare: {
         minutes: 0,
-        seconds: 15,
+        seconds: 10,
       },
+      rounds: 6,
     },
-    {
-      mode: '3Person',
+    uchikomi: {
       time: {
         minutes: 3,
         seconds: 0,
+      },
+      rest: {
+        minutes: 0,
+        seconds: 30,
+      },
+      warning: {
+        minutes: 0,
+        seconds: 15,
+      },
+      prepare: {
+        minutes: 0,
+        seconds: 10,
+      },
+    },
+    threePerson: {
+      time: {
+        minutes: 3,
+        seconds: 0,
+      },
+      rest: {
+        minutes: 0,
+        seconds: 30,
+      },
+      warning: {
+        minutes: 0,
+        seconds: 15,
+      },
+      prepare: {
+        minutes: 0,
+        seconds: 10,
       },
       rounds: 5,
-      warning: {
-        minutes: 0,
-        seconds: 15,
-      },
-      rest: {
-        minutes: 0,
-        seconds: 0,
-      },
-      prepare: {
-        minutes: 0,
-        seconds: 15,
-      },
     },
-    {
-      mode: 'waterBreak',
+    waterBreak: {
       time: {
         minutes: 3,
         seconds: 0,
       },
-      rounds: 1,
-      warning: {
-        minutes: 0,
-        seconds: 0,
-      },
       rest: {
         minutes: 0,
-        seconds: 0,
+        seconds: 30,
+      },
+      warning: {
+        minutes: 0,
+        seconds: 15,
       },
       prepare: {
         minutes: 0,
-        seconds: 0,
+        seconds: 10,
       },
     },
-  ]);
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -145,17 +140,37 @@ const Settings = () => {
     );
 
     console.log(times.data);
-    // setTimers{}
+    setTimers(times.data);
   }
 
   useEffect(() => {
-    console.log(timers);
-  }, [timers]);
+    loadTimes();
+    // console.log(timers);
+  }, [isLoading]);
+
+  async function getQuery() {
+    const currentUser = await user;
+
+    const { data } = await axios.get(
+      `http://localhost:3001/users/getUser/${currentUser.email}`
+    );
+    setTimers(data);
+    return data;
+  }
+
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ['times'],
+  //   queryFn: getQuery,
+  // });
+
+  // if (isLoading) return 'Loading...';
+
+  // console.log(data);
 
   return (
     <Box>
-      {/* {<p>{timers[0].time.minutes}</p>}
-      {<p>{timers[0].time.seconds}</p>} */}
+      {/* {timers.randori.time.minutes} */}
+      {/* {console.log(timers)} */}
       <Container>
         <Tabs isFitted pt="10">
           <TabList>
@@ -179,14 +194,17 @@ const Settings = () => {
                       inputReadOnly={true}
                       showHour={false}
                       value={moment()
-                        .minute(
-                          timers.find((timer) => timer.mode === 'randori').time
-                            .minutes
-                        )
-                        .second(
-                          timers.find((timer) => timer.mode === 'randori').time
-                            .seconds
-                        )}
+                        .minute(timers?.randori?.time?.minutes)
+                        .second(timers?.randori?.time?.seconds)}
+                      // value={moment()
+                      //   .minute(
+                      //     timers.find((timer) => timer.mode === 'randori').time
+                      //       .minutes
+                      //   )
+                      //   .second(
+                      //     timers.find((timer) => timer.mode === 'randori').time
+                      //       .seconds
+                      //   )}
                       defaultOpenValue={moment().minute(0).second(0)}
                       onChange={(e) => handleChange(e, 'randori', 'time')}
                     />
