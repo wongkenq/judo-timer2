@@ -14,6 +14,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import Dropdown from './Dropdown';
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/test" element={<Test />} />
         <Route path="/qr" element={<Qr />} />
+        <Route path="/dropdown" element={<Dropdown />} />
       </Routes>
     </QueryClientProvider>
   );

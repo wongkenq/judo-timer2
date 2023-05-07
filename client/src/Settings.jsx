@@ -12,25 +12,20 @@ import {
   Divider,
   FormControl,
   Button,
+  Select,
 } from '@chakra-ui/react';
 import { RiSaveLine } from 'react-icons/ri';
 import React, { useEffect, useState } from 'react';
-import TimePicker from 'rc-time-picker';
-// import 'rc-time-picker/assets/index.css';
-import moment from 'moment';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 
 const Settings = () => {
   const { user, isLoading } = useAuth0();
-
-  // console.log(user.email);
-
+  const [fetchedTimers, setFetchedTimers] = useState({});
   const [timers, setTimers] = useState({
     randori: {
       time: {
-        minutes: 5,
+        minutes: 2,
         seconds: 0,
       },
       rest: {
@@ -115,21 +110,18 @@ const Settings = () => {
     console.log('user created');
   }
 
-  function handleChange(e, mode, type) {
-    const timer = e._d.toString().split(' ')[4];
-    const [hh, mm, ss] = timer.split(':');
-
-    let newTimer = [...timers].find((time) => time.mode === mode);
+  function handleChange(value, mode, type, mm) {
+    console.log('timer change');
+    const changedTime = JSON.parse(JSON.stringify(timers));
 
     if (type === 'rounds') {
-      console.log('type rounds');
-      newTimer[type] = Number(ss);
+      changedTime[mode][type] = Number(value);
     } else {
-      newTimer[type].minutes = Number(mm);
-      newTimer[type].seconds = Number(ss);
+      changedTime[mode][type][mm] = Number(value);
     }
 
-    setTimers([...timers], newTimer);
+    console.log(changedTime);
+    setTimers(changedTime);
   }
 
   async function loadTimes() {
@@ -139,13 +131,13 @@ const Settings = () => {
       `http://localhost:3001/users/getUser/${currentUser.email}`
     );
 
-    console.log(times.data);
+    // console.log(times.data);
     setTimers(times.data);
   }
 
   useEffect(() => {
     loadTimes();
-    // console.log(timers);
+    console.log('useeffect');
   }, [isLoading]);
 
   async function getQuery() {
@@ -158,19 +150,21 @@ const Settings = () => {
     return data;
   }
 
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ['times'],
-  //   queryFn: getQuery,
-  // });
+  if (isLoading) return 'Loading...';
 
-  // if (isLoading) return 'Loading...';
+  let options = [];
 
-  // console.log(data);
+  for (let i = 0; i < 60; i++) {
+    const op = document.createElement('option');
+    op.text = i;
+    op.text = op.text.padStart(2, '0');
+    op.value = i;
+
+    options.push(op);
+  }
 
   return (
     <Box>
-      {/* {timers.randori.time.minutes} */}
-      {/* {console.log(timers)} */}
       <Container>
         <Tabs isFitted pt="10">
           <TabList>
@@ -190,24 +184,49 @@ const Settings = () => {
                     m="1em 0"
                   >
                     <Text>Timer</Text>
-                    <TimePicker
-                      inputReadOnly={true}
-                      showHour={false}
-                      value={moment()
-                        .minute(timers?.randori?.time?.minutes)
-                        .second(timers?.randori?.time?.seconds)}
-                      // value={moment()
-                      //   .minute(
-                      //     timers.find((timer) => timer.mode === 'randori').time
-                      //       .minutes
-                      //   )
-                      //   .second(
-                      //     timers.find((timer) => timer.mode === 'randori').time
-                      //       .seconds
-                      //   )}
-                      defaultOpenValue={moment().minute(0).second(0)}
-                      onChange={(e) => handleChange(e, 'randori', 'time')}
-                    />
+                    <Box>
+                      <Flex gap="0.25rem">
+                        <Select
+                          onChange={(e) =>
+                            handleChange(
+                              e.target.value,
+                              'randori',
+                              'time',
+                              'minutes'
+                            )
+                          }
+                          size="sm"
+                          iconSize="0"
+                          value={timers.randori.time?.minutes}
+                        >
+                          {options.map((op) => (
+                            <option key={op.value} value={op.value}>
+                              {op.innerText}
+                            </option>
+                          ))}
+                        </Select>
+                        :
+                        <Select
+                          onChange={(e) =>
+                            handleChange(
+                              e.target.value,
+                              'randori',
+                              'time',
+                              'seconds'
+                            )
+                          }
+                          size="sm"
+                          iconSize="0"
+                          value={timers.randori.time?.seconds}
+                        >
+                          {options.map((op) => (
+                            <option key={op.value} value={op.value}>
+                              {op.innerText}
+                            </option>
+                          ))}
+                        </Select>
+                      </Flex>
+                    </Box>
                   </Flex>
                   <Divider />
                   <Flex
@@ -216,14 +235,22 @@ const Settings = () => {
                     m="1em 0"
                   >
                     <Text>Rounds</Text>
-                    <TimePicker
-                      inputReadOnly={true}
-                      showHour={false}
-                      showMinute={false}
-                      // defaultValue={moment().second(timers.randori.rounds)}
-                      defaultOpenValue={moment().minute(0).second(0)}
-                      onChange={(e) => handleChange(e, 'randori', 'rounds')}
-                    />
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(e.target.value, 'randori', 'rounds', '')
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.randori?.rounds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
                   </Flex>
                   <Divider />
                   <Flex
@@ -232,15 +259,47 @@ const Settings = () => {
                     m="1em 0"
                   >
                     <Text>Warning</Text>
-                    <TimePicker
-                      inputReadOnly={true}
-                      showHour={false}
-                      // defaultValue={moment()
-                      //   .minute(timers.randori.warning.minutes)
-                      //   .second(timers.randori.warning.seconds)}
-                      defaultOpenValue={moment().minute(0).second(0)}
-                      onChange={(e) => handleChange(e, 'randori', 'warning')}
-                    />
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'randori',
+                            'warning',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.randori.warning?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'randori',
+                            'warning',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.randori.warning?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
                   </Flex>
                   <Divider />
                   <Flex
@@ -249,15 +308,47 @@ const Settings = () => {
                     m="1em 0"
                   >
                     <Text>Rest</Text>
-                    <TimePicker
-                      inputReadOnly={true}
-                      showHour={false}
-                      // defaultValue={moment()
-                      //   .minute(timers.randori.rest.minutes)
-                      //   .second(timers.randori.rest.seconds)}
-                      defaultOpenValue={moment().minute(0).second(0)}
-                      onChange={(e) => handleChange(e, 'randori', 'rest')}
-                    />
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'randori',
+                            'rest',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.randori.rest?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'randori',
+                            'rest',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.randori.rest?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
                   </Flex>
                   <Divider />
                   <Flex
@@ -266,15 +357,47 @@ const Settings = () => {
                     m="1em 0"
                   >
                     <Text>Prepare</Text>
-                    <TimePicker
-                      inputReadOnly={true}
-                      showHour={false}
-                      // defaultValue={moment()
-                      //   .minute(timers.randori.prepare.minutes)
-                      //   .second(timers.randori.prepare.seconds)}
-                      defaultOpenValue={moment().minute(0).second(0)}
-                      onChange={(e) => handleChange(e, 'randori', 'prepare')}
-                    />
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'randori',
+                            'prepare',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.randori.prepare?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'randori',
+                            'prepare',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.randori.prepare?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
                   </Flex>
                   <Flex justifyContent="flex-end" gap={1}>
                     <Button type="submit" rightIcon={<RiSaveLine />} size="sm">
@@ -293,7 +416,7 @@ const Settings = () => {
                 alignItems="center"
                 m="1em 0"
               >
-                <Text>Timer</Text>
+                <Text>Time</Text>
                 <Input width="50%" size="sm"></Input>
               </Flex>
               <Divider />

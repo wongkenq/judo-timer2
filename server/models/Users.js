@@ -7,7 +7,6 @@ const UsersSchema = new mongoose.Schema({
       minutes: { type: Number, default: 2 },
       seconds: { type: Number, default: 0 },
     },
-    rounds: { type: Number, default: 6 },
     rest: {
       minutes: { type: Number, default: 0 },
       seconds: { type: Number, default: 30 },
@@ -18,8 +17,9 @@ const UsersSchema = new mongoose.Schema({
     },
     prepare: {
       minutes: { type: Number, default: 0 },
-      seconds: { type: Number, default: 10 },
+      seconds: { type: Number, default: 15 },
     },
+    rounds: { type: Number, default: 6 },
   },
   uchikomi: {
     time: {
@@ -36,15 +36,14 @@ const UsersSchema = new mongoose.Schema({
     },
     prepare: {
       minutes: { type: Number, default: 0 },
-      seconds: { type: Number, default: 10 },
+      seconds: { type: Number, default: 15 },
     },
   },
   threePerson: {
     time: {
-      minutes: { type: Number, default: 3 },
+      minutes: { type: Number, default: 1 },
       seconds: { type: Number, default: 0 },
     },
-    rounds: { type: Number, default: 5 },
     rest: {
       minutes: { type: Number, default: 0 },
       seconds: { type: Number, default: 30 },
@@ -55,8 +54,9 @@ const UsersSchema = new mongoose.Schema({
     },
     prepare: {
       minutes: { type: Number, default: 0 },
-      seconds: { type: Number, default: 10 },
+      seconds: { type: Number, default: 15 },
     },
+    rounds: { type: Number, default: 6 },
   },
   waterBreak: {
     time: {
@@ -73,7 +73,7 @@ const UsersSchema = new mongoose.Schema({
     },
     prepare: {
       minutes: { type: Number, default: 0 },
-      seconds: { type: Number, default: 10 },
+      seconds: { type: Number, default: 15 },
     },
   },
 });
