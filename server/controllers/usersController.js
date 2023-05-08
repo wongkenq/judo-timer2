@@ -19,13 +19,34 @@ module.exports = {
     // });
   },
   createUser: async (req, res) => {
-    const user = new User({
-      email: req.body.email,
-    });
+    const user = await User.find({ email: req.body.email });
 
-    await user
-      .save()
-      .then((data) => res.json({ message: 'User added', data }))
-      .catch((error) => console.log(error));
+    if (user.length > 0) {
+      await User.findOneAndUpdate(
+        { email: req.body.email },
+        {
+          email: req.body.email,
+          randori: req.body.randori,
+          uchikomi: req.body.uchikomi,
+          threePerson: req.body.threePerson,
+          waterBreak: req.body.waterBreak,
+        }
+      )
+        .then((data) => res.json({ message: 'User updated', data }))
+        .catch((error) => console.log(error));
+    } else {
+      const newUser = new User({
+        email: req.body.email,
+        randori: req.body.randori,
+        uchikomi: req.body.uchikomi,
+        threePerson: req.body.threePerson,
+        waterBreak: req.body.waterBreak,
+      });
+
+      await newUser
+        .save()
+        .then((data) => res.json({ message: 'User added', data }))
+        .catch((error) => console.log(error));
+    }
   },
 };

@@ -105,9 +105,13 @@ const Settings = () => {
 
     axios.post(`http://localhost:3001/users/createUser`, {
       email: user.email,
+      randori: timers.randori,
+      uchikomi: timers.uchikomi,
+      threePerson: timers.threePerson,
+      waterBreak: timers.waterBreak,
     });
 
-    console.log('user created');
+    // console.log('user created');
   }
 
   function handleChange(value, mode, type, mm) {
@@ -137,18 +141,7 @@ const Settings = () => {
 
   useEffect(() => {
     loadTimes();
-    console.log('useeffect');
   }, [isLoading]);
-
-  async function getQuery() {
-    const currentUser = await user;
-
-    const { data } = await axios.get(
-      `http://localhost:3001/users/getUser/${currentUser.email}`
-    );
-    setTimers(data);
-    return data;
-  }
 
   if (isLoading) return 'Loading...';
 
@@ -173,105 +166,29 @@ const Settings = () => {
             <Tab>3-Person</Tab>
             <Tab>Water Break</Tab>
           </TabList>
-
-          <TabPanels>
-            <TabPanel>
-              <form onSubmit={(e) => handleSubmit(e)}>
-                <FormControl>
-                  <Flex
-                    justifyContent="space-between"
-                    alignItems="center"
-                    m="1em 0"
-                  >
-                    <Text>Timer</Text>
-                    <Box>
-                      <Flex gap="0.25rem">
-                        <Select
-                          onChange={(e) =>
-                            handleChange(
-                              e.target.value,
-                              'randori',
-                              'time',
-                              'minutes'
-                            )
-                          }
-                          size="sm"
-                          iconSize="0"
-                          value={timers.randori.time?.minutes}
-                        >
-                          {options.map((op) => (
-                            <option key={op.value} value={op.value}>
-                              {op.innerText}
-                            </option>
-                          ))}
-                        </Select>
-                        :
-                        <Select
-                          onChange={(e) =>
-                            handleChange(
-                              e.target.value,
-                              'randori',
-                              'time',
-                              'seconds'
-                            )
-                          }
-                          size="sm"
-                          iconSize="0"
-                          value={timers.randori.time?.seconds}
-                        >
-                          {options.map((op) => (
-                            <option key={op.value} value={op.value}>
-                              {op.innerText}
-                            </option>
-                          ))}
-                        </Select>
-                      </Flex>
-                    </Box>
-                  </Flex>
-                  <Divider />
-                  <Flex
-                    justifyContent="space-between"
-                    alignItems="center"
-                    m="1em 0"
-                  >
-                    <Text>Rounds</Text>
-                    <Flex gap="0.25rem">
-                      <Select
-                        onChange={(e) =>
-                          handleChange(e.target.value, 'randori', 'rounds', '')
-                        }
-                        size="sm"
-                        iconSize="0"
-                        value={timers.randori?.rounds}
-                      >
-                        {options.map((op) => (
-                          <option key={op.value} value={op.value}>
-                            {op.innerText}
-                          </option>
-                        ))}
-                      </Select>
-                    </Flex>
-                  </Flex>
-                  <Divider />
-                  <Flex
-                    justifyContent="space-between"
-                    alignItems="center"
-                    m="1em 0"
-                  >
-                    <Text>Warning</Text>
+          <form onSubmit={(e) => handleSubmit(e)}>
+            <TabPanels>
+              <TabPanel>
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Timer</Text>
+                  <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(
                             e.target.value,
                             'randori',
-                            'warning',
+                            'time',
                             'minutes'
                           )
                         }
                         size="sm"
                         iconSize="0"
-                        value={timers.randori.warning?.minutes}
+                        value={timers.randori.time?.minutes}
                       >
                         {options.map((op) => (
                           <option key={op.value} value={op.value}>
@@ -285,13 +202,13 @@ const Settings = () => {
                           handleChange(
                             e.target.value,
                             'randori',
-                            'warning',
+                            'time',
                             'seconds'
                           )
                         }
                         size="sm"
                         iconSize="0"
-                        value={timers.randori.warning?.seconds}
+                        value={timers.randori.time?.seconds}
                       >
                         {options.map((op) => (
                           <option key={op.value} value={op.value}>
@@ -300,27 +217,252 @@ const Settings = () => {
                         ))}
                       </Select>
                     </Flex>
+                  </Box>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Rounds</Text>
+                  <Flex gap="0.25rem">
+                    <Select
+                      onChange={(e) =>
+                        handleChange(e.target.value, 'randori', 'rounds', '')
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.randori?.rounds}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
                   </Flex>
-                  <Divider />
-                  <Flex
-                    justifyContent="space-between"
-                    alignItems="center"
-                    m="1em 0"
-                  >
-                    <Text>Rest</Text>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Warning</Text>
+                  <Flex gap="0.25rem">
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'randori',
+                          'warning',
+                          'minutes'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.randori.warning?.minutes}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                    :
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'randori',
+                          'warning',
+                          'seconds'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.randori.warning?.seconds}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                  </Flex>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Rest</Text>
+                  <Flex gap="0.25rem">
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'randori',
+                          'rest',
+                          'minutes'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.randori.rest?.minutes}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                    :
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'randori',
+                          'rest',
+                          'seconds'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.randori.rest?.seconds}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                  </Flex>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Prepare</Text>
+                  <Flex gap="0.25rem">
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'randori',
+                          'prepare',
+                          'minutes'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.randori.prepare?.minutes}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                    :
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'randori',
+                          'prepare',
+                          'seconds'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.randori.prepare?.seconds}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                  </Flex>
+                </Flex>
+              </TabPanel>
+              <TabPanel>
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Time</Text>
+                  <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(
                             e.target.value,
-                            'randori',
+                            'uchikomi',
+                            'time',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.uchikomi.time?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'uchikomi',
+                            'time',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.uchikomi.time?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+                  </Box>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Rest</Text>
+                  <Box>
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'uchikomi',
                             'rest',
                             'minutes'
                           )
                         }
                         size="sm"
                         iconSize="0"
-                        value={timers.randori.rest?.minutes}
+                        value={timers.uchikomi.rest?.minutes}
                       >
                         {options.map((op) => (
                           <option key={op.value} value={op.value}>
@@ -333,14 +475,14 @@ const Settings = () => {
                         onChange={(e) =>
                           handleChange(
                             e.target.value,
-                            'randori',
+                            'uchikomi',
                             'rest',
                             'seconds'
                           )
                         }
                         size="sm"
                         iconSize="0"
-                        value={timers.randori.rest?.seconds}
+                        value={timers.uchikomi.rest?.seconds}
                       >
                         {options.map((op) => (
                           <option key={op.value} value={op.value}>
@@ -349,27 +491,29 @@ const Settings = () => {
                         ))}
                       </Select>
                     </Flex>
-                  </Flex>
-                  <Divider />
-                  <Flex
-                    justifyContent="space-between"
-                    alignItems="center"
-                    m="1em 0"
-                  >
-                    <Text>Prepare</Text>
+                  </Box>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Warning</Text>
+                  <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(
                             e.target.value,
-                            'randori',
-                            'prepare',
+                            'uchikomi',
+                            'warning',
                             'minutes'
                           )
                         }
                         size="sm"
                         iconSize="0"
-                        value={timers.randori.prepare?.minutes}
+                        value={timers.uchikomi.warning?.minutes}
                       >
                         {options.map((op) => (
                           <option key={op.value} value={op.value}>
@@ -382,14 +526,14 @@ const Settings = () => {
                         onChange={(e) =>
                           handleChange(
                             e.target.value,
-                            'randori',
-                            'prepare',
+                            'uchikomi',
+                            'warning',
                             'seconds'
                           )
                         }
                         size="sm"
                         iconSize="0"
-                        value={timers.randori.prepare?.seconds}
+                        value={timers.uchikomi.warning?.seconds}
                       >
                         {options.map((op) => (
                           <option key={op.value} value={op.value}>
@@ -398,130 +542,503 @@ const Settings = () => {
                         ))}
                       </Select>
                     </Flex>
+                  </Box>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Prepare</Text>
+                  <Box>
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'uchikomi',
+                            'prepare',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.uchikomi.prepare?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'uchikomi',
+                            'prepare',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.uchikomi.prepare?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+                  </Box>
+                </Flex>
+              </TabPanel>
+              <TabPanel>
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Timer</Text>
+                  <Box>
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'threePerson',
+                            'time',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.threePerson.time?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'threePerson',
+                            'time',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.threePerson.time?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+                  </Box>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Rounds</Text>
+                  <Flex gap="0.25rem">
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'threePerson',
+                          'rounds',
+                          ''
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.threePerson?.rounds}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
                   </Flex>
-                  <Flex justifyContent="flex-end" gap={1}>
-                    <Button type="submit" rightIcon={<RiSaveLine />} size="sm">
-                      Save
-                    </Button>
-                    <Button onClick={loadTimes} size="sm">
-                      Load
-                    </Button>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Warning</Text>
+                  <Flex gap="0.25rem">
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'threePerson',
+                          'warning',
+                          'minutes'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.threePerson.warning?.minutes}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                    :
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'threePerson',
+                          'warning',
+                          'seconds'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.threePerson.warning?.seconds}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
                   </Flex>
-                </FormControl>
-              </form>
-            </TabPanel>
-            <TabPanel>
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Time</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-            </TabPanel>
-            <TabPanel>
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-            </TabPanel>
-            <TabPanel>
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-              <Divider />
-              <Flex
-                justifyContent="space-between"
-                alignItems="center"
-                m="1em 0"
-              >
-                <Text>Timer</Text>
-                <Input width="50%" size="sm"></Input>
-              </Flex>
-            </TabPanel>
-          </TabPanels>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Rest</Text>
+                  <Flex gap="0.25rem">
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'threePerson',
+                          'rest',
+                          'minutes'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.threePerson.rest?.minutes}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                    :
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'threePerson',
+                          'rest',
+                          'seconds'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.threePerson.rest?.seconds}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                  </Flex>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Prepare</Text>
+                  <Flex gap="0.25rem">
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'threePerson',
+                          'prepare',
+                          'minutes'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.threePerson.prepare?.minutes}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                    :
+                    <Select
+                      onChange={(e) =>
+                        handleChange(
+                          e.target.value,
+                          'threePerson',
+                          'prepare',
+                          'seconds'
+                        )
+                      }
+                      size="sm"
+                      iconSize="0"
+                      value={timers.threePerson.prepare?.seconds}
+                    >
+                      {options.map((op) => (
+                        <option key={op.value} value={op.value}>
+                          {op.innerText}
+                        </option>
+                      ))}
+                    </Select>
+                  </Flex>
+                </Flex>
+              </TabPanel>
+              <TabPanel>
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Time</Text>
+                  <Box>
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'waterBreak',
+                            'time',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.waterBreak.time?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'waterBreak',
+                            'time',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.waterBreak.time?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+                  </Box>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Rest</Text>
+                  <Box>
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'waterBreak',
+                            'rest',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.waterBreak.rest?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'waterBreak',
+                            'rest',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.waterBreak.rest?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+                  </Box>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Warning</Text>
+                  <Box>
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'waterBreak',
+                            'warning',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.waterBreak.warning?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'waterBreak',
+                            'warning',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.waterBreak.warning?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+                  </Box>
+                </Flex>
+                <Divider />
+                <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  m="1em 0"
+                >
+                  <Text>Prepare</Text>
+                  <Box>
+                    <Flex gap="0.25rem">
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'waterBreak',
+                            'prepare',
+                            'minutes'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.waterBreak.prepare?.minutes}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                      :
+                      <Select
+                        onChange={(e) =>
+                          handleChange(
+                            e.target.value,
+                            'waterBreak',
+                            'prepare',
+                            'seconds'
+                          )
+                        }
+                        size="sm"
+                        iconSize="0"
+                        value={timers.waterBreak.prepare?.seconds}
+                      >
+                        {options.map((op) => (
+                          <option key={op.value} value={op.value}>
+                            {op.innerText}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+                  </Box>
+                </Flex>
+              </TabPanel>
+            </TabPanels>
+            <Flex justifyContent="flex-end" gap={1}>
+              <Button type="submit" rightIcon={<RiSaveLine />} size="sm">
+                Save
+              </Button>
+              <Button onClick={loadTimes} size="sm">
+                Load
+              </Button>
+            </Flex>
+          </form>
         </Tabs>
       </Container>
     </Box>
