@@ -115,7 +115,7 @@ const Settings = () => {
   }
 
   function handleChange(value, mode, type, mm) {
-    console.log('timer change');
+    // console.log('timer change');
     const changedTime = JSON.parse(JSON.stringify(timers));
 
     if (type === 'rounds') {
@@ -124,7 +124,7 @@ const Settings = () => {
       changedTime[mode][type][mm] = Number(value);
     }
 
-    console.log(changedTime);
+    // console.log(changedTime);
     setTimers(changedTime);
   }
 
