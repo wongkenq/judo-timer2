@@ -86,7 +86,16 @@ export default function Nav() {
                       Settings
                     </Link>
                   </MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
+                  <MenuItem>
+                    <Link as={RRLink} to="/timer">
+                      Timer
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link as={RRLink} to="/test">
+                      Test
+                    </Link>
+                  </MenuItem>
                   <MenuItem>Logout</MenuItem>
                 </MenuList>
               </Menu>

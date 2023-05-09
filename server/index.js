@@ -38,6 +38,14 @@ io.on('connection', (socket) => {
     console.log(data);
   });
 
+  socket.on('show_toast', (data) => {
+    socket.broadcast.emit('receive_toast', data);
+  });
+
+  socket.on('update_times', (data) => {
+    socket.broadcast.emit('current_times', data);
+  });
+
   // socket.on('paired', (data) => {
   //   console.log(data);
   // });

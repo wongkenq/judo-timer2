@@ -13,13 +13,18 @@ import {
   FormControl,
   Button,
   Select,
+  useToast,
 } from '@chakra-ui/react';
 import { RiSaveLine } from 'react-icons/ri';
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
+import io from 'socket.io-client';
+
+const socket = io.connect('http://localhost:3001');
 
 const Settings = () => {
+  const toast = useToast();
   const { user, isLoading } = useAuth0();
   const [fetchedTimers, setFetchedTimers] = useState({});
   const [timers, setTimers] = useState({
@@ -111,6 +116,8 @@ const Settings = () => {
       waterBreak: timers.waterBreak,
     });
 
+    socket.emit('update_times', { update: true });
+
     // console.log('user created');
   }
 
@@ -138,6 +145,28 @@ const Settings = () => {
     // console.log(times.data);
     setTimers(times.data);
   }
+
+  function showToast() {
+    toast({
+      title: 'WebSocket',
+      duration: 1000,
+      isClosable: false,
+      variant: 'subtle',
+      position: 'top',
+      status: 'success',
+      colorScheme: 'cyan',
+    });
+  }
+
+  function remoteToast() {
+    socket.emit('show_toast', { toast: true });
+  }
+
+  useEffect(() => {
+    socket.on('receive_toast', (data) => {
+      console.log(data);
+    });
+  }, [socket]);
 
   useEffect(() => {
     loadTimes();
@@ -1040,6 +1069,7 @@ const Settings = () => {
             </Flex>
           </form>
         </Tabs>
+        <Button onClick={remoteToast}>Test</Button>
       </Container>
     </Box>
   );

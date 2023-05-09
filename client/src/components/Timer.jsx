@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Box, useColorMode } from '@chakra-ui/react';
+import { Box, useColorMode, useToast, Flex, Button } from '@chakra-ui/react';
 import './Timer.css';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
+import io from 'socket.io-client';
+
+const socket = io.connect('http://localhost:3001');
 
 const Timer = () => {
+  const toast = useToast();
   const { colorMode } = useColorMode();
   const [timers, setTimers] = useState();
   const { user, isLoading } = useAuth0();
   const [currentMode, setCurrentMode] = useState('randori');
   const [currentRound, setCurrentRound] = useState(1);
   const [currentTime, setCurrentTime] = useState({ minutes: 0, seconds: 0 });
+  const [showToast, setShowToast] = useState(false);
+  const [updateTimes, setUpdateTimes] = useState(false);
+  const [startButton, setStartButton] = useState(false);
 
   async function loadTimes() {
+    console.log('loading times');
     const currentUser = await user;
 
     const times = await axios.get(
@@ -29,7 +37,45 @@ const Timer = () => {
 
   useEffect(() => {
     loadTimes();
-  }, [isLoading]);
+    setUpdateTimes(false);
+  }, [isLoading, updateTimes, currentMode]);
+
+  function remoteToast() {
+    socket.emit('show_toast', { toast: true });
+  }
+
+  useEffect(() => {
+    socket.on('receive_toast', (data) => {
+      setShowToast(true);
+    });
+
+    socket.on('current_times', (data) => {
+      setUpdateTimes(true);
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    if (showToast) {
+      toast({
+        title: 'WebSocket Toast',
+        variant: 'subtle',
+        isClosable: false,
+        duration: 1000,
+        status: 'success',
+        colorScheme: 'cyan',
+        position: 'top',
+        id: 'test',
+      });
+      setShowToast(false);
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    if (updateTimes) {
+      loadTimes();
+      // setUpdateTimes(false);
+    }
+  }, [updateTimes]);
 
   // useEffect(() => {
   //   setCurrentTime({
@@ -157,6 +203,12 @@ const Timer = () => {
           <Box>Rest</Box>
         </Box>
       </section>
+      <Box mt={'1rem'} w="50%">
+        <Flex justifyContent="space-evenly">
+          <Button size="lg">{startButton ? 'Pause' : 'Start'}</Button>
+          <Button size="lg">Reset</Button>
+        </Flex>
+      </Box>
     </main>
   );
 };
