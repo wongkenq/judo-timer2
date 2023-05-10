@@ -4,6 +4,8 @@ import './Timer.css';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import io from 'socket.io-client';
+import { CiPlay1, CiPause1 } from 'react-icons/ci';
+import { GrPowerReset } from 'react-icons/gr';
 
 const socket = io.connect('http://localhost:3001');
 
@@ -118,7 +120,32 @@ const Timer = () => {
               {currentTime && String(currentTime.seconds).padStart(2, '0')}
             </Box>
           </Box>
-          <Box>total time</Box>
+          <Box>
+            {timers &&
+              Math.floor(
+                ((timers[currentMode].time.minutes * 60 +
+                  timers[currentMode].time.seconds) *
+                  timers[currentMode].rounds +
+                  timers[currentMode].prepare.minutes * 60 +
+                  timers[currentMode].prepare.seconds +
+                  (timers[currentMode].rest.minutes * 60 +
+                    timers[currentMode].rest.seconds) *
+                    (timers[currentMode].rounds - 1)) /
+                  60
+              )}
+            :
+            {timers &&
+              ((timers[currentMode].time.minutes * 60 +
+                timers[currentMode].time.seconds) *
+                timers[currentMode].rounds +
+                timers[currentMode].prepare.minutes * 60 +
+                timers[currentMode].prepare.seconds +
+                (timers[currentMode].rest.minutes * 60 +
+                  timers[currentMode].rest.seconds) *
+                  (timers[currentMode].rounds - 1)) %
+                60}
+          </Box>
+          {/* <Box>total time</Box> */}
         </Box>
       </section>
       <section className="bottom">
@@ -205,8 +232,12 @@ const Timer = () => {
       </section>
       <Box mt={'1rem'} w="50%">
         <Flex justifyContent="space-evenly">
-          <Button size="lg">{startButton ? 'Pause' : 'Start'}</Button>
-          <Button size="lg">Reset</Button>
+          <Button size="lg" onClick={() => setStartButton(!startButton)}>
+            {startButton ? <CiPause1 /> : <CiPlay1 />}
+          </Button>
+          <Button size="lg">
+            <GrPowerReset color="white" />
+          </Button>
         </Flex>
       </Box>
     </main>
