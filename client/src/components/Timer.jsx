@@ -19,7 +19,8 @@ const Timer = () => {
   const [currentTime, setCurrentTime] = useState({ minutes: 0, seconds: 0 });
   const [showToast, setShowToast] = useState(false);
   const [updateTimes, setUpdateTimes] = useState(false);
-  const [startButton, setStartButton] = useState(false);
+  const [clockIsRunning, setClockIsRunning] = useState(false);
+  const [isRest, setIsRest] = useState(false);
 
   let id = useRef();
 
@@ -40,7 +41,6 @@ const Timer = () => {
   }
 
   function startTimer() {
-    console.log('starting timer');
     const start = Date.now();
     const end =
       start + currentTime.minutes * 60 * 1000 + currentTime.seconds * 1000;
@@ -48,16 +48,40 @@ const Timer = () => {
     id.current = setInterval(() => {
       const current = Date.now();
       const remaining = end - current;
-      setCurrentTime({
-        minutes: String(Math.floor(remaining / 1000 / 60)).padStart(2, '0'),
-        seconds: String(Math.floor((remaining / 1000) % 60)).padStart(2, '0'),
-      });
+      if (currentRound <= timers[currentMode].rounds) {
+        if (remaining > 0) {
+          setCurrentTime({
+            minutes: String(Math.floor(remaining / 1000 / 60)).padStart(2, '0'),
+            seconds: String(Math.floor((remaining / 1000) % 60)).padStart(
+              2,
+              '0'
+            ),
+          });
+        } else {
+          clearInterval(id.current);
+          if (currentRound < timers[currentMode].rounds)
+            setCurrentRound(currentRound + 1);
+          resetTimer();
+          setClockIsRunning(false);
+        }
+      } else {
+        setClockIsRunning(false);
+      }
     }, 100);
+    setClockIsRunning(true);
   }
 
   function pauseTimer() {
-    console.log('pausing timer');
     clearInterval(id.current);
+    setClockIsRunning(false);
+  }
+
+  function resetTimer() {
+    pauseTimer();
+    setCurrentTime({
+      minutes: timers[currentMode].time.minutes,
+      seconds: timers[currentMode].time.seconds,
+    });
   }
 
   useEffect(() => {
@@ -258,14 +282,17 @@ const Timer = () => {
           <Button
             size="lg"
             // onClick={() => setStartButton(!startButton)}
-            onClick={startTimer}
+            onClick={clockIsRunning ? pauseTimer : startTimer}
           >
-            {startButton ? <CiPause1 /> : <CiPlay1 />}
+            {clockIsRunning ? <CiPause1 /> : <CiPlay1 />}
           </Button>
           <Button
             size="lg"
             // onClick={() => console.log('reset')}
-            onClick={pauseTimer}
+            onClick={() => {
+              resetTimer();
+              setCurrentRound(1);
+            }}
           >
             <GrPowerReset color="white" />
           </Button>
