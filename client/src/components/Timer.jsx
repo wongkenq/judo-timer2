@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, useColorMode, useToast, Flex, Button } from '@chakra-ui/react';
 import './Timer.css';
 import axios from 'axios';
@@ -21,6 +21,8 @@ const Timer = () => {
   const [updateTimes, setUpdateTimes] = useState(false);
   const [startButton, setStartButton] = useState(false);
 
+  let id = useRef();
+
   async function loadTimes() {
     console.log('loading times');
     const currentUser = await user;
@@ -35,6 +37,27 @@ const Timer = () => {
       minutes: times.data[currentMode].time.minutes,
       seconds: times.data[currentMode].time.seconds,
     });
+  }
+
+  function startTimer() {
+    console.log('starting timer');
+    const start = Date.now();
+    const end =
+      start + currentTime.minutes * 60 * 1000 + currentTime.seconds * 1000;
+
+    id.current = setInterval(() => {
+      const current = Date.now();
+      const remaining = end - current;
+      setCurrentTime({
+        minutes: String(Math.floor(remaining / 1000 / 60)).padStart(2, '0'),
+        seconds: String(Math.floor((remaining / 1000) % 60)).padStart(2, '0'),
+      });
+    }, 100);
+  }
+
+  function pauseTimer() {
+    console.log('pausing timer');
+    clearInterval(id.current);
   }
 
   useEffect(() => {
@@ -232,10 +255,18 @@ const Timer = () => {
       </section>
       <Box mt={'1rem'} w="50%">
         <Flex justifyContent="space-evenly">
-          <Button size="lg" onClick={() => setStartButton(!startButton)}>
+          <Button
+            size="lg"
+            // onClick={() => setStartButton(!startButton)}
+            onClick={startTimer}
+          >
             {startButton ? <CiPause1 /> : <CiPlay1 />}
           </Button>
-          <Button size="lg">
+          <Button
+            size="lg"
+            // onClick={() => console.log('reset')}
+            onClick={pauseTimer}
+          >
             <GrPowerReset color="white" />
           </Button>
         </Flex>
