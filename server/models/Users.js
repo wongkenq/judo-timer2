@@ -38,6 +38,7 @@ const UsersSchema = new mongoose.Schema({
       minutes: { type: Number, default: 0 },
       seconds: { type: Number, default: 15 },
     },
+    rounds: { type: Number, default: 1 },
   },
   threePerson: {
     time: {
@@ -75,6 +76,7 @@ const UsersSchema = new mongoose.Schema({
       minutes: { type: Number, default: 0 },
       seconds: { type: Number, default: 15 },
     },
+    rounds: { type: Number, default: 1 },
   },
 });
 
