@@ -89,12 +89,8 @@ function Test() {
       const remainingTime = end - currentTime;
       if (remainingTime >= 0) {
         setRemainingTime(remainingTime);
-        setMinutes(
-          String(Math.floor(remainingTime / 1000 / 60)).padStart(2, '0')
-        );
-        setSeconds(
-          String(Math.floor((remainingTime / 1000) % 60)).padStart(2, '0')
-        );
+        setMinutes(String(Math.floor(remainingTime / 1000 / 60)).padStart(2, '0'));
+        setSeconds(String(Math.floor((remainingTime / 1000) % 60)).padStart(2, '0'));
       } else {
         clearInterval(id.current);
         setStart(false);
@@ -189,11 +185,7 @@ function Test() {
       </div>
       <button onClick={createRoom}>Create Room</button>
       <h2>{room == null ? 'Click Create Room' : room}</h2>
-      <input
-        type="number"
-        onChange={(e) => setRoom(Number(e.target.value))}
-        value={room}
-      />
+      <input type="number" onChange={(e) => setRoom(Number(e.target.value))} value={room} />
       <button onClick={joinRoom}>Join Room</button>
       <form onSubmit={sendMessage}>
         <input type="text" onChange={(e) => setMessage(e.target.value)} />

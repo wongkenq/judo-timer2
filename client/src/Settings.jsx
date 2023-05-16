@@ -64,6 +64,7 @@ const Settings = () => {
         minutes: 0,
         seconds: 10,
       },
+      rounds: 1,
     },
     threePerson: {
       time: {
@@ -101,6 +102,7 @@ const Settings = () => {
         minutes: 0,
         seconds: 10,
       },
+      rounds: 1,
     },
   });
 
@@ -138,9 +140,7 @@ const Settings = () => {
   async function loadTimes() {
     const currentUser = await user;
 
-    const times = await axios.get(
-      `http://localhost:3001/users/getUser/${currentUser.email}`
-    );
+    const times = await axios.get(`http://localhost:3001/users/getUser/${currentUser.email}`);
 
     // console.log(times.data);
     setTimers(times.data);
@@ -198,23 +198,12 @@ const Settings = () => {
           <form onSubmit={(e) => handleSubmit(e)}>
             <TabPanels>
               <TabPanel>
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Timer</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
-                        onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'randori',
-                            'time',
-                            'minutes'
-                          )
-                        }
+                        onChange={(e) => handleChange(e.target.value, 'randori', 'time', 'minutes')}
                         size="sm"
                         iconSize="0"
                         value={timers.randori.time?.minutes}
@@ -227,14 +216,7 @@ const Settings = () => {
                       </Select>
                       :
                       <Select
-                        onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'randori',
-                            'time',
-                            'seconds'
-                          )
-                        }
+                        onChange={(e) => handleChange(e.target.value, 'randori', 'time', 'seconds')}
                         size="sm"
                         iconSize="0"
                         value={timers.randori.time?.seconds}
@@ -249,17 +231,11 @@ const Settings = () => {
                   </Box>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Rounds</Text>
                   <Flex gap="0.25rem">
                     <Select
-                      onChange={(e) =>
-                        handleChange(e.target.value, 'randori', 'rounds', '')
-                      }
+                      onChange={(e) => handleChange(e.target.value, 'randori', 'rounds', '')}
                       size="sm"
                       iconSize="0"
                       value={timers.randori?.rounds}
@@ -273,21 +249,12 @@ const Settings = () => {
                   </Flex>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Warning</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'randori',
-                          'warning',
-                          'minutes'
-                        )
+                        handleChange(e.target.value, 'randori', 'warning', 'minutes')
                       }
                       size="sm"
                       iconSize="0"
@@ -302,12 +269,7 @@ const Settings = () => {
                     :
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'randori',
-                          'warning',
-                          'seconds'
-                        )
+                        handleChange(e.target.value, 'randori', 'warning', 'seconds')
                       }
                       size="sm"
                       iconSize="0"
@@ -322,22 +284,11 @@ const Settings = () => {
                   </Flex>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Rest</Text>
                   <Flex gap="0.25rem">
                     <Select
-                      onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'randori',
-                          'rest',
-                          'minutes'
-                        )
-                      }
+                      onChange={(e) => handleChange(e.target.value, 'randori', 'rest', 'minutes')}
                       size="sm"
                       iconSize="0"
                       value={timers.randori.rest?.minutes}
@@ -350,14 +301,7 @@ const Settings = () => {
                     </Select>
                     :
                     <Select
-                      onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'randori',
-                          'rest',
-                          'seconds'
-                        )
-                      }
+                      onChange={(e) => handleChange(e.target.value, 'randori', 'rest', 'seconds')}
                       size="sm"
                       iconSize="0"
                       value={timers.randori.rest?.seconds}
@@ -371,21 +315,12 @@ const Settings = () => {
                   </Flex>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Prepare</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'randori',
-                          'prepare',
-                          'minutes'
-                        )
+                        handleChange(e.target.value, 'randori', 'prepare', 'minutes')
                       }
                       size="sm"
                       iconSize="0"
@@ -400,12 +335,7 @@ const Settings = () => {
                     :
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'randori',
-                          'prepare',
-                          'seconds'
-                        )
+                        handleChange(e.target.value, 'randori', 'prepare', 'seconds')
                       }
                       size="sm"
                       iconSize="0"
@@ -421,22 +351,13 @@ const Settings = () => {
                 </Flex>
               </TabPanel>
               <TabPanel>
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Time</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'uchikomi',
-                            'time',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'uchikomi', 'time', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -451,12 +372,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'uchikomi',
-                            'time',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'uchikomi', 'time', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
@@ -472,22 +388,13 @@ const Settings = () => {
                   </Box>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Rest</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'uchikomi',
-                            'rest',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'uchikomi', 'rest', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -502,12 +409,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'uchikomi',
-                            'rest',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'uchikomi', 'rest', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
@@ -523,22 +425,13 @@ const Settings = () => {
                   </Box>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Warning</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'uchikomi',
-                            'warning',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'uchikomi', 'warning', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -553,12 +446,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'uchikomi',
-                            'warning',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'uchikomi', 'warning', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
@@ -574,22 +462,13 @@ const Settings = () => {
                   </Box>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Prepare</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'uchikomi',
-                            'prepare',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'uchikomi', 'prepare', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -604,12 +483,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'uchikomi',
-                            'prepare',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'uchikomi', 'prepare', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
@@ -626,22 +500,13 @@ const Settings = () => {
                 </Flex>
               </TabPanel>
               <TabPanel>
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Timer</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'threePerson',
-                            'time',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'threePerson', 'time', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -656,12 +521,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'threePerson',
-                            'time',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'threePerson', 'time', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
@@ -677,22 +537,11 @@ const Settings = () => {
                   </Box>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Rounds</Text>
                   <Flex gap="0.25rem">
                     <Select
-                      onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'threePerson',
-                          'rounds',
-                          ''
-                        )
-                      }
+                      onChange={(e) => handleChange(e.target.value, 'threePerson', 'rounds', '')}
                       size="sm"
                       iconSize="0"
                       value={timers.threePerson?.rounds}
@@ -706,21 +555,12 @@ const Settings = () => {
                   </Flex>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Warning</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'threePerson',
-                          'warning',
-                          'minutes'
-                        )
+                        handleChange(e.target.value, 'threePerson', 'warning', 'minutes')
                       }
                       size="sm"
                       iconSize="0"
@@ -735,12 +575,7 @@ const Settings = () => {
                     :
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'threePerson',
-                          'warning',
-                          'seconds'
-                        )
+                        handleChange(e.target.value, 'threePerson', 'warning', 'seconds')
                       }
                       size="sm"
                       iconSize="0"
@@ -755,21 +590,12 @@ const Settings = () => {
                   </Flex>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Rest</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'threePerson',
-                          'rest',
-                          'minutes'
-                        )
+                        handleChange(e.target.value, 'threePerson', 'rest', 'minutes')
                       }
                       size="sm"
                       iconSize="0"
@@ -784,12 +610,7 @@ const Settings = () => {
                     :
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'threePerson',
-                          'rest',
-                          'seconds'
-                        )
+                        handleChange(e.target.value, 'threePerson', 'rest', 'seconds')
                       }
                       size="sm"
                       iconSize="0"
@@ -804,21 +625,12 @@ const Settings = () => {
                   </Flex>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Prepare</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'threePerson',
-                          'prepare',
-                          'minutes'
-                        )
+                        handleChange(e.target.value, 'threePerson', 'prepare', 'minutes')
                       }
                       size="sm"
                       iconSize="0"
@@ -833,12 +645,7 @@ const Settings = () => {
                     :
                     <Select
                       onChange={(e) =>
-                        handleChange(
-                          e.target.value,
-                          'threePerson',
-                          'prepare',
-                          'seconds'
-                        )
+                        handleChange(e.target.value, 'threePerson', 'prepare', 'seconds')
                       }
                       size="sm"
                       iconSize="0"
@@ -854,22 +661,13 @@ const Settings = () => {
                 </Flex>
               </TabPanel>
               <TabPanel>
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Time</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'waterBreak',
-                            'time',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'waterBreak', 'time', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -884,12 +682,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'waterBreak',
-                            'time',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'waterBreak', 'time', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
@@ -905,22 +698,13 @@ const Settings = () => {
                   </Box>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Rest</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'waterBreak',
-                            'rest',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'waterBreak', 'rest', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -935,12 +719,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'waterBreak',
-                            'rest',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'waterBreak', 'rest', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
@@ -956,22 +735,13 @@ const Settings = () => {
                   </Box>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Warning</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'waterBreak',
-                            'warning',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'waterBreak', 'warning', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -986,12 +756,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'waterBreak',
-                            'warning',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'waterBreak', 'warning', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
@@ -1007,22 +772,13 @@ const Settings = () => {
                   </Box>
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent="space-between"
-                  alignItems="center"
-                  m="1em 0"
-                >
+                <Flex justifyContent="space-between" alignItems="center" m="1em 0">
                   <Text>Prepare</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'waterBreak',
-                            'prepare',
-                            'minutes'
-                          )
+                          handleChange(e.target.value, 'waterBreak', 'prepare', 'minutes')
                         }
                         size="sm"
                         iconSize="0"
@@ -1037,12 +793,7 @@ const Settings = () => {
                       :
                       <Select
                         onChange={(e) =>
-                          handleChange(
-                            e.target.value,
-                            'waterBreak',
-                            'prepare',
-                            'seconds'
-                          )
+                          handleChange(e.target.value, 'waterBreak', 'prepare', 'seconds')
                         }
                         size="sm"
                         iconSize="0"
