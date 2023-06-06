@@ -42,8 +42,15 @@ const Timer = () => {
     setIsActive(false);
     setCurrentRound(1);
     setCurrentTime(timers[currentMode].prepare.minutes * 60 + timers[currentMode].prepare.seconds);
+    console.log(timers);
     // setCurrentTime(timers['randori'].prepare.minutes * 60 + timers['randori'].prepare.seconds);
   }
+
+  useEffect(() => {
+    if (isReset) {
+      resetTimer();
+    }
+  }, [isReset]);
 
   useEffect(() => {
     // socket.on('receive_toast', (data) => {
@@ -65,8 +72,8 @@ const Timer = () => {
 
     socket.on('receive_resetTimer', (data) => {
       if (data) {
-        // setIsReset(true);
-        resetTimer();
+        setIsReset(true);
+        // resetTimer();
       }
       console.log(data);
     });

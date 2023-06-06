@@ -21,7 +21,6 @@ const Control = () => {
 
   function handleResetTimer() {
     socket.emit('send_resetTimer', true);
-    console.log('reset');
   }
 
   return (
