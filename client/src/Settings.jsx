@@ -21,7 +21,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:3001');
+const socketURL = import.meta.env.VITE_APP_SOCKET;
+const API = import.meta.env.VITE_APP_API;
+const socket = io.connect(socketURL);
 
 const Settings = () => {
   const toast = useToast();
@@ -110,7 +112,7 @@ const Settings = () => {
     e.preventDefault();
     // console.log('submit');
 
-    axios.post(`http://localhost:3001/users/createUser`, {
+    axios.post(`${API}/users/createUser`, {
       email: user.email,
       randori: timers.randori,
       uchikomi: timers.uchikomi,
