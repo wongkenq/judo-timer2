@@ -95,11 +95,11 @@ export default function Nav() {
                       Timer
                     </Link>
                   </MenuItem>
-                  <MenuItem>
+                  {/* <MenuItem>
                     <Link as={RRLink} to="/test">
                       Test
                     </Link>
-                  </MenuItem>
+                  </MenuItem> */}
                   <MenuItem>
                     <Link as={RRLink} to="/control">
                       Control

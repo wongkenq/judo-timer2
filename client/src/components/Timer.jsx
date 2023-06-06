@@ -42,7 +42,8 @@ const Timer = () => {
     setIsActive(false);
     setCurrentRound(1);
     setCurrentTime(timers[currentMode].prepare.minutes * 60 + timers[currentMode].prepare.seconds);
-    console.log(timers);
+    setIsReset(false);
+    // console.log(timers);
     // setCurrentTime(timers['randori'].prepare.minutes * 60 + timers['randori'].prepare.seconds);
   }
 
@@ -68,6 +69,9 @@ const Timer = () => {
     socket.on('current_times', (data) => {
       // setUpdateTimes(true);
       setTimers(data.timers);
+      setCurrentTime(
+        data.timers[currentMode].prepare.minutes * 60 + data.timers[currentMode].prepare.seconds
+      );
     });
 
     socket.on('receive_resetTimer', (data) => {
@@ -75,7 +79,7 @@ const Timer = () => {
         setIsReset(true);
         // resetTimer();
       }
-      console.log(data);
+      // console.log(data);
     });
   }, [socket]);
 
