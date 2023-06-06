@@ -18,6 +18,7 @@ import {
 import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { Link as RRLink } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const NavLink = ({ children, href }) => (
   <Link
@@ -38,6 +39,7 @@ export default function Nav() {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [input, setInput] = useState('');
+  const { user } = useAuth0();
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -64,7 +66,7 @@ export default function Nav() {
                 >
                   <Avatar
                     size={'sm'}
-                    src={'https://avatars.dicebear.com/api/male/username.svg'}
+                    src={user ? user.picture : 'https://avatars.dicebear.com/api/male/username.svg'}
                   />
                 </MenuButton>
                 <MenuList alignItems={'center'}>
@@ -72,12 +74,14 @@ export default function Nav() {
                   <Center>
                     <Avatar
                       size={'2xl'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
+                      src={
+                        user ? user.picture : 'https://avatars.dicebear.com/api/male/username.svg'
+                      }
                     />
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
+                    <p>{user?.email}</p>
                   </Center>
                   <br />
                   <MenuDivider />
@@ -94,6 +98,11 @@ export default function Nav() {
                   <MenuItem>
                     <Link as={RRLink} to="/test">
                       Test
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link as={RRLink} to="/control">
+                      Control
                     </Link>
                   </MenuItem>
                   <MenuItem>Logout</MenuItem>
