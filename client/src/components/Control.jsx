@@ -5,7 +5,9 @@ import { GrPowerReset } from 'react-icons/gr';
 import { RxReset } from 'react-icons/rx';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:3001');
+const socketURL = import.meta.env.VITE_APP_SOCKET;
+const API = import.meta.env.VITE_APP_API;
+const socket = io.connect(socketURL);
 
 const Control = () => {
   const [clockIsRunning, setClockIsRunning] = useState(false);
