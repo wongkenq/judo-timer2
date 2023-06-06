@@ -7,7 +7,9 @@ import io from 'socket.io-client';
 import { CiPlay1, CiPause1 } from 'react-icons/ci';
 import { GrPowerReset } from 'react-icons/gr';
 
-const socket = io.connect('http://localhost:3001');
+const socketURL = import.meta.env.VITE_APP_SOCKET;
+const API = import.meta.env.VITE_APP_API;
+const socket = io.connect(socketURL);
 
 const Timer = () => {
   // const toast = useToast();
@@ -21,13 +23,13 @@ const Timer = () => {
   const [isRest, setIsRest] = useState(false);
   const [isPrepare, setIsPrepare] = useState(true);
   const [isReset, setIsReset] = useState(false);
-  const [updateTimes, setUpdateTimes] = useState(false);
+  // const [updateTimes, setUpdateTimes] = useState(false);
 
   async function loadTimes() {
     // console.log('loading times');
     const currentUser = await user;
 
-    const times = await axios.get(`http://localhost:3001/users/getUser/${currentUser.email}`);
+    const times = await axios.get(`${API}/users/getUser/${currentUser.email}`);
     // console.log(user);
     // console.log(times);
 
