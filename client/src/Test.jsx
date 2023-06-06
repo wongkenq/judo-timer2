@@ -6,7 +6,9 @@ import { useEffect, useRef, useState } from 'react';
 // import moment from 'moment';
 // import QRCode from 'react-qr-code';
 
-const socket = io.connect('http://localhost:3001');
+const socketURL = import.meta.env.VITE_APP_SOCKET;
+const API = import.meta.env.VITE_APP_API;
+const socket = io.connect(socketURL);
 
 function Test() {
   const [message, setMessage] = useState('');

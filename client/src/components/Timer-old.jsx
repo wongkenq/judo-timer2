@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 import { CiPlay1, CiPause1 } from 'react-icons/ci';
 import { GrPowerReset } from 'react-icons/gr';
 
-const socket = io.connect('http://localhost:3001');
+const socket = io.connect(API);
 
 const Timer = () => {
   // const toast = useToast();

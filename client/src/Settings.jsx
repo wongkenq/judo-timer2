@@ -142,7 +142,7 @@ const Settings = () => {
   async function loadTimes() {
     const currentUser = await user;
 
-    const times = await axios.get(`http://localhost:3001/users/getUser/${currentUser.email}`);
+    const times = await axios.get(`${API}/users/getUser/${currentUser.email}`);
 
     // console.log(times.data);
     setTimers(times.data);
