@@ -118,7 +118,7 @@ const Settings = () => {
       waterBreak: timers.waterBreak,
     });
 
-    socket.emit('update_times', { update: true });
+    socket.emit('update_times', { update: true, timers: timers });
 
     // console.log('user created');
   }

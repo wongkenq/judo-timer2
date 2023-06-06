@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, useColorMode, Flex, Button } from '@chakra-ui/react';
+import { Box, useColorMode, Flex, Button, Spinner, Container } from '@chakra-ui/react';
 import './Timer.css';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -20,14 +20,16 @@ const Timer = () => {
   const [isActive, setIsActive] = useState(false);
   const [isRest, setIsRest] = useState(false);
   const [isPrepare, setIsPrepare] = useState(true);
+  const [isReset, setIsReset] = useState(false);
+  const [updateTimes, setUpdateTimes] = useState(false);
 
   async function loadTimes() {
     // console.log('loading times');
     const currentUser = await user;
 
     const times = await axios.get(`http://localhost:3001/users/getUser/${currentUser.email}`);
-    console.log(user);
-    console.log(times);
+    // console.log(user);
+    // console.log(times);
 
     setTimers(times.data);
     setCurrentTime(
@@ -40,23 +42,63 @@ const Timer = () => {
     setIsActive(false);
     setCurrentRound(1);
     setCurrentTime(timers[currentMode].prepare.minutes * 60 + timers[currentMode].prepare.seconds);
+    // setCurrentTime(timers['randori'].prepare.minutes * 60 + timers['randori'].prepare.seconds);
   }
 
-  // useEffect(() => {
-  //   socket.on('receive_toast', (data) => {
-  //     setShowToast(true);
-  //   });
+  useEffect(() => {
+    // socket.on('receive_toast', (data) => {
+    //   setShowToast(true);
+    // });
 
-  //   socket.on('current_times', (data) => {
-  //     setUpdateTimes(true);
-  //   });
-  // }, [socket]);
+    socket.on('receive_mode', (data) => {
+      setCurrentMode(data.value);
+    });
+
+    socket.on('receive_clockIsRunning', (data) => {
+      setIsActive(data.value);
+    });
+
+    socket.on('current_times', (data) => {
+      // setUpdateTimes(true);
+      setTimers(data.timers);
+    });
+
+    socket.on('receive_resetTimer', (data) => {
+      if (data) {
+        // setIsReset(true);
+        resetTimer();
+      }
+      console.log(data);
+    });
+  }, [socket]);
 
   useEffect(() => {
     if (!isLoading) {
       loadTimes();
     }
   }, [isLoading]);
+
+  // useEffect(() => {
+  //   if (user && setIsReset) {
+  //     setIsRest(false);
+  //     setIsActive(false);
+  //     setCurrentRound(1);
+  //     setTimeout(() => {
+  //       console.log(timers);
+  //     }, 5000);
+
+  //     setIsReset(false);
+  //   }
+  // }, [isReset, user]);
+
+  // useEffect(() => {
+  //   if (updateTimes) {
+  //     setTimeout(() => {
+  //       loadTimes();
+  //       setUpdateTimes(false);
+  //     }, 500);
+  //   }
+  // }, [updateTimes]);
 
   useEffect(() => {
     let interval;
@@ -87,6 +129,16 @@ const Timer = () => {
       clearInterval(interval);
     };
   }, [isActive, currentTime, isRest]);
+
+  if (isLoading) {
+    return (
+      <Container height="100vh">
+        <Flex height="100%" justifyContent="center" alignItems="center">
+          <Spinner size="xl" />
+        </Flex>
+      </Container>
+    );
+  }
 
   return (
     <main>

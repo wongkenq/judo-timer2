@@ -43,6 +43,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('update_times', (data) => {
+    console.log(data);
     socket.broadcast.emit('current_times', data);
   });
 
@@ -69,6 +70,19 @@ io.on('connection', (socket) => {
   socket.on('set_time', (data) => {
     console.log(data);
     socket.to(data.room).emit('time', data);
+  });
+
+  socket.on('send_mode', (data) => {
+    socket.broadcast.emit('receive_mode', data);
+  });
+
+  socket.on('send_clockIsRunning', (data) => {
+    socket.broadcast.emit('receive_clockIsRunning', data);
+  });
+
+  socket.on('send_resetTimer', (data) => {
+    socket.broadcast.emit('receive_resetTimer', data);
+    console.log(data);
   });
 });
 
