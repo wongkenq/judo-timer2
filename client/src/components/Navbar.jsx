@@ -14,6 +14,7 @@ import {
   Stack,
   useColorMode,
   Center,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
@@ -40,6 +41,8 @@ export default function Nav() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [input, setInput] = useState('');
   const { user } = useAuth0();
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -69,7 +72,7 @@ export default function Nav() {
                     src={user ? user.picture : 'https://avatars.dicebear.com/api/male/username.svg'}
                   />
                 </MenuButton>
-                <MenuList alignItems={'center'}>
+                <MenuList alignItems={'center'} width={isLargerThan800 ? '' : '90vw'}>
                   <br />
                   <Center>
                     <Avatar
@@ -85,13 +88,19 @@ export default function Nav() {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>
-                    <Link as={RRLink} to="/settings">
+                  <MenuItem
+                    fontSize={isLargerThan800 ? '' : '3xl'}
+                    textAlign={isLargerThan800 ? 'left' : 'center'}
+                  >
+                    <Link as={RRLink} to="/settings" width="100%">
                       Settings
                     </Link>
                   </MenuItem>
-                  <MenuItem>
-                    <Link as={RRLink} to="/timer">
+                  <MenuItem
+                    fontSize={isLargerThan800 ? '' : '3xl'}
+                    textAlign={isLargerThan800 ? 'left' : 'center'}
+                  >
+                    <Link as={RRLink} to="/timer" width="100%">
                       Timer
                     </Link>
                   </MenuItem>
@@ -100,12 +109,15 @@ export default function Nav() {
                       Test
                     </Link>
                   </MenuItem> */}
-                  <MenuItem>
-                    <Link as={RRLink} to="/control">
+                  <MenuItem
+                    fontSize={isLargerThan800 ? '' : '3xl'}
+                    textAlign={isLargerThan800 ? 'left' : 'center'}
+                  >
+                    <Link as={RRLink} to="/control" width="100%">
                       Control
                     </Link>
                   </MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  {/* <MenuItem>Logout</MenuItem> */}
                 </MenuList>
               </Menu>
             </Stack>
