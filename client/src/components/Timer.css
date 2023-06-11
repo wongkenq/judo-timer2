@@ -5,7 +5,7 @@ main {
   align-items: center;
   width: 80%;
   margin: auto;
-  height: calc(100%-64px);
+  height: calc(100% - 64px);
 }
 
 h1 {
@@ -90,4 +90,11 @@ section div {
 .round > div:last-of-type,
 .rest > div:last-of-type {
   font-size: 0.75em;
+}
+
+@media (min-width: 1600px) {
+  .top {
+    height: 75%;
+    font-size: 2rem;
+  }
 }
