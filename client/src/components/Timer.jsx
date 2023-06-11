@@ -23,6 +23,9 @@ const Timer = () => {
   const [isRest, setIsRest] = useState(false);
   const [isPrepare, setIsPrepare] = useState(true);
   const [isReset, setIsReset] = useState(false);
+
+  const singleBell = new Audio('./sounds/1bell (2).mp3');
+
   // const [updateTimes, setUpdateTimes] = useState(false);
 
   async function loadTimes() {
@@ -45,6 +48,7 @@ const Timer = () => {
     setCurrentRound(1);
     setCurrentTime(timers[currentMode].prepare.minutes * 60 + timers[currentMode].prepare.seconds);
     setIsReset(false);
+    setIsPrepare(true);
     // console.log(timers);
     // setCurrentTime(timers['randori'].prepare.minutes * 60 + timers['randori'].prepare.seconds);
   }
@@ -91,28 +95,6 @@ const Timer = () => {
     }
   }, [isLoading]);
 
-  // useEffect(() => {
-  //   if (user && setIsReset) {
-  //     setIsRest(false);
-  //     setIsActive(false);
-  //     setCurrentRound(1);
-  //     setTimeout(() => {
-  //       console.log(timers);
-  //     }, 5000);
-
-  //     setIsReset(false);
-  //   }
-  // }, [isReset, user]);
-
-  // useEffect(() => {
-  //   if (updateTimes) {
-  //     setTimeout(() => {
-  //       loadTimes();
-  //       setUpdateTimes(false);
-  //     }, 500);
-  //   }
-  // }, [updateTimes]);
-
   useEffect(() => {
     let interval;
 
@@ -142,6 +124,18 @@ const Timer = () => {
       clearInterval(interval);
     };
   }, [isActive, currentTime, isRest]);
+
+  useEffect(() => {
+    if (!isLoading && timers) {
+      if (
+        currentTime ===
+          timers[currentMode]?.time.minutes * 60 + timers[currentMode]?.time.seconds &&
+        !isPrepare
+      ) {
+        singleBell.play();
+      }
+    }
+  }, [currentTime, isPrepare, isLoading]);
 
   if (isLoading) {
     return (
