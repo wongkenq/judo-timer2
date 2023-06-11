@@ -14,6 +14,7 @@ import {
   Button,
   Select,
   useToast,
+  Spinner,
 } from '@chakra-ui/react';
 import { RiSaveLine } from 'react-icons/ri';
 import React, { useEffect, useState } from 'react';
@@ -110,7 +111,6 @@ const Settings = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // console.log('submit');
 
     axios.post(`${API}/users/createUser`, {
       email: user.email,
@@ -121,12 +121,9 @@ const Settings = () => {
     });
 
     socket.emit('update_times', { update: true, timers: timers });
-
-    // console.log('user created');
   }
 
   function handleChange(value, mode, type, mm) {
-    // console.log('timer change');
     const changedTime = JSON.parse(JSON.stringify(timers));
 
     if (type === 'rounds') {
@@ -135,7 +132,6 @@ const Settings = () => {
       changedTime[mode][type][mm] = Number(value);
     }
 
-    // console.log(changedTime);
     setTimers(changedTime);
   }
 
@@ -144,37 +140,44 @@ const Settings = () => {
 
     const times = await axios.get(`${API}/users/getUser/${currentUser.email}`);
 
-    // console.log(times.data);
     setTimers(times.data);
   }
 
-  function showToast() {
-    toast({
-      title: 'WebSocket',
-      duration: 1000,
-      isClosable: false,
-      variant: 'subtle',
-      position: 'top',
-      status: 'success',
-      colorScheme: 'cyan',
-    });
-  }
+  // function showToast() {
+  //   toast({
+  //     title: 'WebSocket',
+  //     duration: 1000,
+  //     isClosable: false,
+  //     variant: 'subtle',
+  //     position: 'top',
+  //     status: 'success',
+  //     colorScheme: 'cyan',
+  //   });
+  // }
 
-  function remoteToast() {
-    socket.emit('show_toast', { toast: true });
-  }
+  // function remoteToast() {
+  //   socket.emit('show_toast', { toast: true });
+  // }
 
-  useEffect(() => {
-    socket.on('receive_toast', (data) => {
-      console.log(data);
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.on('receive_toast', (data) => {
+  //     console.log(data);
+  //   });
+  // }, [socket]);
 
   useEffect(() => {
     loadTimes();
   }, [isLoading]);
 
-  if (isLoading) return 'Loading...';
+  if (isLoading) {
+    return (
+      <Container height="100vh">
+        <Flex justifyContent="center" alignItems="center">
+          <Spinner size="xl" />
+        </Flex>
+      </Container>
+    );
+  }
 
   let options = [];
 
@@ -816,13 +819,12 @@ const Settings = () => {
               <Button type="submit" rightIcon={<RiSaveLine />} size="sm">
                 Save
               </Button>
-              <Button onClick={loadTimes} size="sm">
+              {/* <Button onClick={loadTimes} size="sm">
                 Load
-              </Button>
+              </Button> */}
             </Flex>
           </form>
         </Tabs>
-        <Button onClick={remoteToast}>Test</Button>
       </Container>
     </Box>
   );
