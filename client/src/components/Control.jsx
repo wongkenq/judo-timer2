@@ -1,12 +1,10 @@
 import { Button, Box, Text, Flex, Select, Container } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { CiPlay1, CiPause1 } from 'react-icons/ci';
-import { GrPowerReset } from 'react-icons/gr';
 import { RxReset } from 'react-icons/rx';
 import io from 'socket.io-client';
 
 const socketURL = import.meta.env.VITE_APP_SOCKET;
-const API = import.meta.env.VITE_APP_API;
 const socket = io.connect(socketURL);
 
 const Control = () => {
