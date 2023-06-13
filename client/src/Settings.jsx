@@ -6,15 +6,14 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Input,
   Text,
   Flex,
   Divider,
-  FormControl,
   Button,
   Select,
   useToast,
   Spinner,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { RiSaveLine } from 'react-icons/ri';
 import React, { useEffect, useState } from 'react';
@@ -28,8 +27,8 @@ const socket = io.connect(socketURL);
 
 const Settings = () => {
   const toast = useToast();
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
   const { user, isLoading } = useAuth0();
-  const [fetchedTimers, setFetchedTimers] = useState({});
   const [timers, setTimers] = useState({
     randori: {
       time: {
@@ -181,7 +180,7 @@ const Settings = () => {
 
   let options = [];
 
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 60; i += 5) {
     const op = document.createElement('option');
     op.text = i;
     op.text = op.text.padStart(2, '0');
@@ -204,12 +203,13 @@ const Settings = () => {
             <TabPanels>
               <TabPanel>
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Timer</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Timer</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) => handleChange(e.target.value, 'randori', 'time', 'minutes')}
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.randori.time?.minutes}
                       >
@@ -219,10 +219,11 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) => handleChange(e.target.value, 'randori', 'time', 'seconds')}
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.randori.time?.seconds}
                       >
@@ -237,11 +238,12 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Rounds</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Rounds</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) => handleChange(e.target.value, 'randori', 'rounds', '')}
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.randori?.rounds}
                     >
@@ -255,13 +257,14 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Warning</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Warning</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'randori', 'warning', 'minutes')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.randori.warning?.minutes}
                     >
@@ -271,12 +274,13 @@ const Settings = () => {
                         </option>
                       ))}
                     </Select>
-                    :
+                    <Flex alignItems="center">:</Flex>
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'randori', 'warning', 'seconds')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.randori.warning?.seconds}
                     >
@@ -290,11 +294,12 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Rest</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Rest</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) => handleChange(e.target.value, 'randori', 'rest', 'minutes')}
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.randori.rest?.minutes}
                     >
@@ -304,10 +309,11 @@ const Settings = () => {
                         </option>
                       ))}
                     </Select>
-                    :
+                    <Flex alignItems="center">:</Flex>
                     <Select
                       onChange={(e) => handleChange(e.target.value, 'randori', 'rest', 'seconds')}
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.randori.rest?.seconds}
                     >
@@ -321,13 +327,14 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Prepare</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Prepare</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'randori', 'prepare', 'minutes')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.randori.prepare?.minutes}
                     >
@@ -337,12 +344,13 @@ const Settings = () => {
                         </option>
                       ))}
                     </Select>
-                    :
+                    <Flex alignItems="center">:</Flex>
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'randori', 'prepare', 'seconds')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.randori.prepare?.seconds}
                     >
@@ -357,14 +365,15 @@ const Settings = () => {
               </TabPanel>
               <TabPanel>
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Time</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Time</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'uchikomi', 'time', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.uchikomi.time?.minutes}
                       >
@@ -374,12 +383,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'uchikomi', 'time', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.uchikomi.time?.seconds}
                       >
@@ -394,14 +404,15 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Rest</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Rest</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'uchikomi', 'rest', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.uchikomi.rest?.minutes}
                       >
@@ -411,12 +422,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'uchikomi', 'rest', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.uchikomi.rest?.seconds}
                       >
@@ -431,14 +443,15 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Warning</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Warning</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'uchikomi', 'warning', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.uchikomi.warning?.minutes}
                       >
@@ -448,12 +461,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'uchikomi', 'warning', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.uchikomi.warning?.seconds}
                       >
@@ -468,14 +482,15 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Prepare</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Prepare</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'uchikomi', 'prepare', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.uchikomi.prepare?.minutes}
                       >
@@ -485,12 +500,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'uchikomi', 'prepare', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.uchikomi.prepare?.seconds}
                       >
@@ -506,14 +522,15 @@ const Settings = () => {
               </TabPanel>
               <TabPanel>
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Timer</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Time</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'threePerson', 'time', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.threePerson.time?.minutes}
                       >
@@ -523,12 +540,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'threePerson', 'time', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.threePerson.time?.seconds}
                       >
@@ -543,11 +561,12 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Rounds</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Rounds</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) => handleChange(e.target.value, 'threePerson', 'rounds', '')}
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.threePerson?.rounds}
                     >
@@ -561,13 +580,14 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Warning</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Warning</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'threePerson', 'warning', 'minutes')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.threePerson.warning?.minutes}
                     >
@@ -577,12 +597,13 @@ const Settings = () => {
                         </option>
                       ))}
                     </Select>
-                    :
+                    <Flex alignItems="center">:</Flex>
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'threePerson', 'warning', 'seconds')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.threePerson.warning?.seconds}
                     >
@@ -596,13 +617,14 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Rest</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Rest</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'threePerson', 'rest', 'minutes')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.threePerson.rest?.minutes}
                     >
@@ -612,12 +634,13 @@ const Settings = () => {
                         </option>
                       ))}
                     </Select>
-                    :
+                    <Flex alignItems="center">:</Flex>
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'threePerson', 'rest', 'seconds')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.threePerson.rest?.seconds}
                     >
@@ -631,13 +654,14 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Prepare</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Prepare</Text>
                   <Flex gap="0.25rem">
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'threePerson', 'prepare', 'minutes')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.threePerson.prepare?.minutes}
                     >
@@ -647,12 +671,13 @@ const Settings = () => {
                         </option>
                       ))}
                     </Select>
-                    :
+                    <Flex alignItems="center">:</Flex>
                     <Select
                       onChange={(e) =>
                         handleChange(e.target.value, 'threePerson', 'prepare', 'seconds')
                       }
-                      size="sm"
+                      size={isLargerThan800 ? 'sm' : 'lg'}
+                      width="100%"
                       iconSize="0"
                       value={timers.threePerson.prepare?.seconds}
                     >
@@ -667,14 +692,15 @@ const Settings = () => {
               </TabPanel>
               <TabPanel>
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Time</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Time</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'waterBreak', 'time', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.waterBreak.time?.minutes}
                       >
@@ -684,12 +710,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'waterBreak', 'time', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.waterBreak.time?.seconds}
                       >
@@ -704,14 +731,15 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Rest</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Rest</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'waterBreak', 'rest', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.waterBreak.rest?.minutes}
                       >
@@ -721,12 +749,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'waterBreak', 'rest', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.waterBreak.rest?.seconds}
                       >
@@ -741,14 +770,15 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Warning</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Warning</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'waterBreak', 'warning', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.waterBreak.warning?.minutes}
                       >
@@ -758,12 +788,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'waterBreak', 'warning', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.waterBreak.warning?.seconds}
                       >
@@ -778,14 +809,15 @@ const Settings = () => {
                 </Flex>
                 <Divider />
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
-                  <Text>Prepare</Text>
+                  <Text fontSize={isLargerThan800 ? '' : '2xl'}>Prepare</Text>
                   <Box>
                     <Flex gap="0.25rem">
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'waterBreak', 'prepare', 'minutes')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.waterBreak.prepare?.minutes}
                       >
@@ -795,12 +827,13 @@ const Settings = () => {
                           </option>
                         ))}
                       </Select>
-                      :
+                      <Flex alignItems="center">:</Flex>
                       <Select
                         onChange={(e) =>
                           handleChange(e.target.value, 'waterBreak', 'prepare', 'seconds')
                         }
-                        size="sm"
+                        size={isLargerThan800 ? 'sm' : 'lg'}
+                        width="100%"
                         iconSize="0"
                         value={timers.waterBreak.prepare?.seconds}
                       >
@@ -816,7 +849,7 @@ const Settings = () => {
               </TabPanel>
             </TabPanels>
             <Flex justifyContent="flex-end" gap={1}>
-              <Button type="submit" rightIcon={<RiSaveLine />} size="sm">
+              <Button type="submit" rightIcon={<RiSaveLine />} size="lg">
                 Save
               </Button>
               {/* <Button onClick={loadTimes} size="sm">
