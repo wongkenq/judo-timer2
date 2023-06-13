@@ -24,7 +24,9 @@ const Timer = () => {
   const [isPrepare, setIsPrepare] = useState(true);
   const [isReset, setIsReset] = useState(false);
 
-  const singleBell = new Audio('./sounds/1bell (2).mp3');
+  const startBell = new Audio('./sounds/1bell (2).mp3');
+  const endBell = new Audio('./sounds/3bell (2).mp3');
+  const warningBell = new Audio('./sounds/clapper.mp3');
 
   // const [updateTimes, setUpdateTimes] = useState(false);
 
@@ -103,21 +105,46 @@ const Timer = () => {
         setCurrentTime(currentTime - 1);
       }, 1000);
     } else if (isActive && currentTime === 0) {
-      if (currentRound < timers[currentMode].rounds) {
-        if (isPrepare) {
-          setIsPrepare(false);
-          setCurrentTime(timers[currentMode].time.minutes * 60 + timers[currentMode].time.seconds);
-        } else if (isRest) {
-          setIsRest(false);
-          setCurrentTime(timers[currentMode].time.minutes * 60 + timers[currentMode].time.seconds);
-          setCurrentRound(currentRound + 1);
-        } else if (!isRest) {
-          setIsRest(true);
-          setCurrentTime(timers[currentMode].rest.minutes * 60 + timers[currentMode].rest.seconds);
+      setTimeout(() => {
+        if (currentMode === 'randori') {
+          if (currentRound < timers[currentMode].rounds) {
+            if (isPrepare) {
+              setIsPrepare(false);
+              setCurrentTime(
+                timers[currentMode].time.minutes * 60 + timers[currentMode].time.seconds
+              );
+            } else if (isRest) {
+              setIsRest(false);
+              setCurrentTime(
+                timers[currentMode].time.minutes * 60 + timers[currentMode].time.seconds
+              );
+              setCurrentRound(currentRound + 1);
+            } else if (!isRest) {
+              setIsRest(true);
+              setCurrentTime(
+                timers[currentMode].rest.minutes * 60 + timers[currentMode].rest.seconds
+              );
+            }
+          } else {
+            clearInterval(interval);
+            setTimeout(() => {
+              resetTimer();
+            }, 500);
+          }
+        } else if (currentMode === 'uchikomi' || 'waterBreak') {
+          if (isPrepare) {
+            setIsPrepare(false);
+            setCurrentTime(
+              timers[currentMode].time.minutes * 60 + timers[currentMode].time.seconds
+            );
+          } else {
+            clearInterval(interval);
+            setTimeout(() => {
+              resetTimer();
+            }, 1000);
+          }
         }
-      } else {
-        clearInterval(interval);
-      }
+      }, 500);
     }
 
     return () => {
@@ -132,7 +159,20 @@ const Timer = () => {
           timers[currentMode]?.time.minutes * 60 + timers[currentMode]?.time.seconds &&
         !isPrepare
       ) {
-        singleBell.play();
+        startBell.play();
+      }
+
+      if (currentTime === 0 && !isPrepare && !isRest) {
+        endBell.play();
+      }
+
+      if (
+        currentTime ===
+          timers[currentMode]?.warning.minutes * 60 + timers[currentMode]?.warning.seconds &&
+        !isPrepare &&
+        !isRest
+      ) {
+        warningBell.play();
       }
     }
   }, [currentTime, isPrepare, isLoading]);
