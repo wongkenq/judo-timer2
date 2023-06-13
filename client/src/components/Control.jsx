@@ -1,4 +1,4 @@
-import { Button, Box, Text, Flex, Select, Container } from '@chakra-ui/react';
+import { Button, Box, Flex, Select, Container } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { CiPlay1, CiPause1 } from 'react-icons/ci';
 import { RxReset } from 'react-icons/rx';
@@ -12,6 +12,8 @@ const Control = () => {
 
   function handleModeSelect(value) {
     socket.emit('send_mode', { value });
+    setClockIsRunning(false);
+    handleResetTimer();
   }
 
   function handleClockIsRunning(value) {
@@ -21,6 +23,7 @@ const Control = () => {
 
   function handleResetTimer() {
     socket.emit('send_resetTimer', true);
+    setClockIsRunning(false);
   }
 
   return (
