@@ -178,7 +178,8 @@ const Settings = () => {
     );
   }
 
-  let options = [];
+  let optionsSeconds = [];
+  let optionsMinutes = [];
 
   for (let i = 0; i < 60; i += 5) {
     const op = document.createElement('option');
@@ -186,7 +187,16 @@ const Settings = () => {
     op.text = op.text.padStart(2, '0');
     op.value = i;
 
-    options.push(op);
+    optionsSeconds.push(op);
+  }
+
+  for (let i = 0; i <= 10; i++) {
+    const op = document.createElement('option');
+    op.text = i;
+    op.text = op.text.padStart(2, '0');
+    op.value = i;
+
+    optionsMinutes.push(op);
   }
 
   return (
@@ -213,7 +223,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.randori.time?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -227,7 +237,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.randori.time?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -247,7 +257,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.randori?.rounds}
                     >
-                      {options.map((op) => (
+                      {optionsMinutes.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -268,7 +278,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.randori.warning?.minutes}
                     >
-                      {options.map((op) => (
+                      {optionsMinutes.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -284,7 +294,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.randori.warning?.seconds}
                     >
-                      {options.map((op) => (
+                      {optionsSeconds.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -303,7 +313,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.randori.rest?.minutes}
                     >
-                      {options.map((op) => (
+                      {optionsMinutes.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -317,7 +327,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.randori.rest?.seconds}
                     >
-                      {options.map((op) => (
+                      {optionsSeconds.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -338,7 +348,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.randori.prepare?.minutes}
                     >
-                      {options.map((op) => (
+                      {optionsMinutes.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -354,7 +364,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.randori.prepare?.seconds}
                     >
-                      {options.map((op) => (
+                      {optionsSeconds.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -377,7 +387,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.uchikomi.time?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -393,7 +403,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.uchikomi.time?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -416,7 +426,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.uchikomi.rest?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -432,7 +442,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.uchikomi.rest?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -455,7 +465,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.uchikomi.warning?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -471,7 +481,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.uchikomi.warning?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -494,7 +504,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.uchikomi.prepare?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -510,7 +520,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.uchikomi.prepare?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -534,7 +544,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.threePerson.time?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -550,7 +560,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.threePerson.time?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -570,7 +580,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.threePerson?.rounds}
                     >
-                      {options.map((op) => (
+                      {optionsMinutes.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -591,7 +601,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.threePerson.warning?.minutes}
                     >
-                      {options.map((op) => (
+                      {optionsMinutes.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -607,7 +617,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.threePerson.warning?.seconds}
                     >
-                      {options.map((op) => (
+                      {optionsSeconds.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -628,7 +638,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.threePerson.rest?.minutes}
                     >
-                      {options.map((op) => (
+                      {optionsMinutes.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -644,7 +654,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.threePerson.rest?.seconds}
                     >
-                      {options.map((op) => (
+                      {optionsSeconds.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -665,7 +675,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.threePerson.prepare?.minutes}
                     >
-                      {options.map((op) => (
+                      {optionsMinutes.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -681,7 +691,7 @@ const Settings = () => {
                       iconSize="0"
                       value={timers.threePerson.prepare?.seconds}
                     >
-                      {options.map((op) => (
+                      {optionsSeconds.map((op) => (
                         <option key={op.value} value={op.value}>
                           {op.innerText}
                         </option>
@@ -704,7 +714,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.waterBreak.time?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -720,7 +730,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.waterBreak.time?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -743,7 +753,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.waterBreak.rest?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -759,7 +769,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.waterBreak.rest?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -782,7 +792,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.waterBreak.warning?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -798,7 +808,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.waterBreak.warning?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -821,7 +831,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.waterBreak.prepare?.minutes}
                       >
-                        {options.map((op) => (
+                        {optionsMinutes.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
@@ -837,7 +847,7 @@ const Settings = () => {
                         iconSize="0"
                         value={timers.waterBreak.prepare?.seconds}
                       >
-                        {options.map((op) => (
+                        {optionsSeconds.map((op) => (
                           <option key={op.value} value={op.value}>
                             {op.innerText}
                           </option>
