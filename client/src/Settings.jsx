@@ -165,7 +165,9 @@ const Settings = () => {
   // }, [socket]);
 
   useEffect(() => {
-    loadTimes();
+    if (!isLoading && user) {
+      loadTimes();
+    }
   }, [isLoading]);
 
   if (isLoading) {
@@ -372,6 +374,34 @@ const Settings = () => {
                     </Select>
                   </Flex>
                 </Flex>
+                <Divider />
+                <Flex width="100%" justifyContent="space-between" mt="1rem">
+                  <Text>Total</Text>
+                  <Box className="total-time">
+                    {`
+                ${String(
+                  Math.floor(
+                    ((timers['randori'].time.minutes * 60 + timers['randori'].time.seconds) *
+                      timers['randori'].rounds +
+                      timers['randori'].prepare.minutes * 60 +
+                      timers['randori'].prepare.seconds +
+                      (timers['randori'].rest.minutes * 60 + timers['randori'].rest.seconds) *
+                        (timers['randori'].rounds - 1)) /
+                      60
+                  )
+                ).padStart(2, '0')}:${String(
+                      ((timers['randori'].time.minutes * 60 + timers['randori'].time.seconds) *
+                        timers['randori'].rounds +
+                        timers['randori'].prepare.minutes * 60 +
+                        timers['randori'].prepare.seconds +
+                        (timers['randori'].rest.minutes * 60 + timers['randori'].rest.seconds) *
+                          (timers['randori'].rounds - 1)) %
+                        60
+                    ).padStart(2, '0')}
+              `}
+                  </Box>
+                </Flex>
+                <Divider margin="1rem 0" />
               </TabPanel>
               <TabPanel>
                 <Flex justifyContent="space-between" alignItems="center" m="1em 0">
