@@ -221,7 +221,7 @@ const Timer = () => {
               {timers && String(Math.floor(currentTime % 60)).padStart(2, '0')}
             </Box>
           </Box>
-          <Box className="total-time">
+          {/* <Box className="total-time">
             {currentMode === ('randori' || 'threePerson')
               ? timers &&
                 `
@@ -248,7 +248,7 @@ const Timer = () => {
               : timers &&
                 `${String(timers[currentMode].time.minutes).padStart(2, '0')}:
                 ${String(timers[currentMode].time.seconds).padStart(2, '0')}`}
-          </Box>
+          </Box> */}
         </Box>
       </section>
       <section className="bottom">
@@ -325,7 +325,7 @@ const Timer = () => {
           <Box>Rest</Box>
         </Box>
       </section>
-      <Box mt={'1rem'} w="50%">
+      {/* <Box mt={'1rem'} w="50%">
         <Flex justifyContent="space-evenly">
           <Button size="lg" onClick={() => setIsActive(!isActive)}>
             {isActive ? <CiPause1 /> : <CiPlay1 />}
@@ -334,7 +334,7 @@ const Timer = () => {
             <GrPowerReset color="white" />
           </Button>
         </Flex>
-      </Box>
+      </Box> */}
     </main>
   );
 };
