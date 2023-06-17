@@ -98,6 +98,14 @@ const Timer = () => {
   }, [isLoading]);
 
   useEffect(() => {
+    if (isActive) {
+      socket.emit('send_isActive', true);
+    } else {
+      socket.emit('send_isActive', false);
+    }
+  }, [isActive]);
+
+  useEffect(() => {
     let interval;
 
     if (isActive && currentTime > 0) {

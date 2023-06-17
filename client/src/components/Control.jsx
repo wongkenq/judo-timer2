@@ -1,5 +1,5 @@
 import { Button, Box, Flex, Select, Container } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiPlay1, CiPause1 } from 'react-icons/ci';
 import { RxReset } from 'react-icons/rx';
 import io from 'socket.io-client';
@@ -25,6 +25,12 @@ const Control = () => {
     socket.emit('send_resetTimer', true);
     setClockIsRunning(false);
   }
+
+  useEffect(() => {
+    socket.on('receive_isActive', (data) => {
+      setClockIsRunning(data);
+    });
+  }, [socket]);
 
   return (
     <Container mt="2rem">

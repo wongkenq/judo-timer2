@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
 
   socket.on('join_room', (data) => {
     socket.join(data);
-    console.log(data);
+    // console.log(data);
   });
 
   socket.on('show_toast', (data) => {
@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('update_times', (data) => {
-    console.log(data);
+    // console.log(data);
     socket.broadcast.emit('current_times', data);
   });
 
@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
   // });
 
   socket.on('send_message', (data) => {
-    console.log(data);
+    // console.log(data);
     socket.to(data.room).emit('received_message', data);
     // socket.emit('received_message', data);
   });
@@ -68,7 +68,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('set_time', (data) => {
-    console.log(data);
     socket.to(data.room).emit('time', data);
   });
 
@@ -82,7 +81,10 @@ io.on('connection', (socket) => {
 
   socket.on('send_resetTimer', (data) => {
     socket.broadcast.emit('receive_resetTimer', data);
-    console.log(data);
+  });
+
+  socket.on('send_isActive', (data) => {
+    socket.broadcast.emit('receive_isActive', data);
   });
 });
 
